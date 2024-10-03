@@ -32,8 +32,22 @@ class AppTheme {
           ),
         ),
       ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Color(0xFFA8DADC), // Aqua Haze
+        selectionColor: Color(0xFFA8DADC), // Aqua Haze
+        selectionHandleColor: Color(0xFFA8DADC), // Aqua Haze
+      ),
       iconTheme: const IconThemeData(
         color: Color(0xFFA8DADC), // Aqua Haze
+      ),
+      iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+        iconColor: WidgetStateProperty.all(const Color(0xFFA8DADC)),
+      )),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: const Color(0xFF457B9D), // Electric Blue
+        ),
       ),
       colorScheme: const ColorScheme.light(
         primary: Color(0xFFFFCB05), // Safety Yellow
@@ -78,8 +92,22 @@ class AppTheme {
           ),
         ),
       ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Color(0xFF457B9D), // Steady Blue
+        selectionColor: Color(0xFF457B9D), // Steady Blue
+        selectionHandleColor: Color(0xFF457B9D), // Steady Blue
+      ),
       iconTheme: const IconThemeData(
         color: Color(0xFF457B9D), // Steady Blue
+      ),
+      iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+        iconColor: WidgetStateProperty.all(const Color(0xFF457B9D)),
+      )),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: const Color(0xFF3A86FF), // Electric Blue
+        ),
       ),
       colorScheme: const ColorScheme.dark(
         primary: Color(0xFFFFB703), // Safety Orange
