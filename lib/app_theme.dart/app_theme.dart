@@ -8,9 +8,23 @@ class AppTheme {
       primaryColor: const Color(0xFFFFCB05), // Safety Yellow
       scaffoldBackgroundColor: const Color(0xFFFFFFFF), // White
       textTheme: _lightTextTheme,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
+        backgroundColor: const Color(0xFFFFFFFF), // White
+        iconTheme:
+            const IconThemeData(color: Color(0xFF2D3748)), // Bold Charcoal
+        titleTextStyle: _lightTextTheme.titleLarge,
+      ),
+      drawerTheme: const DrawerThemeData(
         backgroundColor: Color(0xFFFFFFFF), // White
-        iconTheme: IconThemeData(color: Color(0xFF2D3748)), // Bold Charcoal
+      ),
+      listTileTheme: ListTileThemeData(
+        tileColor: const Color(0xFFFFFFFF), // White
+        iconColor: const Color(0xFFA8DADC), // Aqua Haze
+        selectedColor: const Color(0xFFA8DADC), // Aqua Haze
+        selectedTileColor: const Color(0xFF457B9D), // Steady Blue
+        titleTextStyle: _lightTextTheme.bodyLarge,
+        subtitleTextStyle: _lightTextTheme.bodySmall,
+        leadingAndTrailingTextStyle: _lightTextTheme.bodyMedium,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -46,7 +60,7 @@ class AppTheme {
       )),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: const Color(0xFF457B9D), // Electric Blue
+          foregroundColor: const Color(0xFF457B9D), // Steady Blue
         ),
       ),
       colorScheme: const ColorScheme.light(
@@ -68,9 +82,22 @@ class AppTheme {
       primaryColor: const Color(0xFFFFB703), // Safety Orange
       scaffoldBackgroundColor: const Color(0xFF1C1E21), // Night Black
       textTheme: _darkTextTheme,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
+        backgroundColor: const Color(0xFF1C1E21), // Night Black
+        iconTheme: const IconThemeData(color: Color(0xFFF8F9FA)), // Off White
+        titleTextStyle: _darkTextTheme.titleLarge,
+      ),
+      drawerTheme: const DrawerThemeData(
         backgroundColor: Color(0xFF1C1E21), // Night Black
-        iconTheme: IconThemeData(color: Color(0xFFF8F9FA)), // Off White
+      ),
+      listTileTheme: ListTileThemeData(
+        tileColor: const Color(0xFF1C1E21), // Night Black
+        iconColor: const Color(0xFF457B9D), // Steady Blue
+        selectedColor: const Color(0xFF457B9D), // Steady Blue
+        selectedTileColor: const Color(0xFF3A86FF), // Electric Blue
+        titleTextStyle: _darkTextTheme.bodyLarge,
+        subtitleTextStyle: _darkTextTheme.bodySmall,
+        leadingAndTrailingTextStyle: _darkTextTheme.bodyMedium,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
