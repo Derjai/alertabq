@@ -26,6 +26,14 @@ class AppTheme {
         subtitleTextStyle: _lightTextTheme.bodySmall,
         leadingAndTrailingTextStyle: _lightTextTheme.bodyMedium,
       ),
+      cardTheme: CardTheme(
+        color: const Color(0xFFF1FAEE), // Light Green
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFFFCB05), // Safety Yellow
@@ -98,6 +106,14 @@ class AppTheme {
         titleTextStyle: _darkTextTheme.bodyLarge,
         subtitleTextStyle: _darkTextTheme.bodySmall,
         leadingAndTrailingTextStyle: _darkTextTheme.bodyMedium,
+      ),
+      cardTheme: CardTheme(
+        color: const Color(0xFF2D3748), // Bold Charcoal
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
