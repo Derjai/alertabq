@@ -16,16 +16,7 @@ class RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-            ),
-          ),
-        ],
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(size.width * 0.04),
@@ -85,7 +76,9 @@ class RegisterState extends State<Register> {
               FractionallySizedBox(
                 widthFactor: 0.8,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/Home');
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(
                       vertical: size.height * 0.02,
@@ -126,7 +119,9 @@ class RegisterState extends State<Register> {
                 ],
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.popAndPushNamed(context, '/Login');
+                },
                 child: Text(
                   '¿Ya tienes una cuenta? Iniciar sesión',
                   style: TextStyle(

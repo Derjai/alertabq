@@ -42,7 +42,9 @@ class LandingPage extends StatelessWidget {
                 FractionallySizedBox(
                   widthFactor: 0.8,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/Login');
+                    },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
                         vertical: size.height * 0.02,
@@ -57,7 +59,9 @@ class LandingPage extends StatelessWidget {
                 FractionallySizedBox(
                   widthFactor: 0.8,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/Register');
+                    },
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
                         vertical: size.height * 0.02,
