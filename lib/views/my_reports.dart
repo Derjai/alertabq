@@ -1,7 +1,129 @@
+import 'package:alertabq/views/home_screen.dart';
+import 'package:alertabq/views/reports.dart';
 import 'package:flutter/material.dart';
 
-class MyReports extends StatelessWidget {
+class MyReports extends StatefulWidget {
   const MyReports({super.key});
+  @override
+  _MyReportState createState() => _MyReportState();
+}
+
+class ReportCard extends StatefulWidget {
+  final String location;
+  final String dateTime;
+  final String description;
+  final String? attachment;
+  final List<Event> events;
+
+  const ReportCard({
+    required this.location,
+    required this.dateTime,
+    required this.description,
+    this.attachment,
+    required this.events,
+    super.key,
+  });
+
+  @override
+  State<ReportCard> createState() => _ReportCardState();
+}
+
+class _ReportCardState extends State<ReportCard> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.attachment != null)
+              Image.asset(
+                widget.attachment!,
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
+            const SizedBox(height: 10),
+            Text('Ubicación: ${widget.location}',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text('Fecha y Hora: ${widget.dateTime}'),
+            Text('Descripción: ${widget.description}'),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    // Lógica para añadir eventos
+                  },
+                  child: const Text('Añadir Evento'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Lógica para borrar el reporte
+                  },
+                  child: const Text('Borrar'),
+                ),
+              ],
+            ),
+            const Divider(),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _isExpanded = !_isExpanded;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Eventos',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                ],
+              ),
+            ),
+            if (_isExpanded)
+              Column(
+                children: widget.events.map((event) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: EventCard(event: event),
+                  );
+                }).toList(),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MyReportState extends State<MyReports> {
+  int _selectedIndex = 1;
+
+  void _onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+        break;
+      case 1:
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Reports()),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,13 +217,20 @@ class MyReports extends StatelessWidget {
                   ],
                 ),
               ),
-              NavigationBar(destinations: const [
-                NavigationDestination(icon: Icon(Icons.home), label: 'Inicio'),
-                NavigationDestination(
-                    icon: Icon(Icons.history), label: 'Mis reportes'),
-                NavigationDestination(
-                    icon: Icon(Icons.verified), label: 'Verificar reportes'),
-              ])
+              NavigationBar(
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: _onDestinationSelected,
+                  destinations: const [
+                    NavigationDestination(
+                      icon: Icon(Icons.home),
+                      label: 'Inicio',
+                    ),
+                    NavigationDestination(
+                        icon: Icon(Icons.history), label: 'Mis reportes'),
+                    NavigationDestination(
+                        icon: Icon(Icons.verified),
+                        label: 'Verificar reportes'),
+                  ])
             ],
           ),
           Positioned(
@@ -127,99 +256,6 @@ class MyReports extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ReportCard extends StatefulWidget {
-  final String location;
-  final String dateTime;
-  final String description;
-  final String? attachment;
-  final List<Event> events;
-
-  const ReportCard({
-    required this.location,
-    required this.dateTime,
-    required this.description,
-    this.attachment,
-    required this.events,
-    super.key,
-  });
-
-  @override
-  State<ReportCard> createState() => _ReportCardState();
-}
-
-class _ReportCardState extends State<ReportCard> {
-  bool _isExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (widget.attachment != null)
-              Image.asset(
-                widget.attachment!,
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
-            const SizedBox(height: 10),
-            Text('Ubicación: ${widget.location}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text('Fecha y Hora: ${widget.dateTime}'),
-            Text('Descripción: ${widget.description}'),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    // Lógica para añadir eventos
-                  },
-                  child: const Text('Añadir Evento'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Lógica para borrar el reporte
-                  },
-                  child: const Text('Borrar'),
-                ),
-              ],
-            ),
-            const Divider(),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Eventos',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-                ],
-              ),
-            ),
-            if (_isExpanded)
-              Column(
-                children: widget.events.map((event) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: EventCard(event: event),
-                  );
-                }).toList(),
-              ),
-          ],
-        ),
       ),
     );
   }

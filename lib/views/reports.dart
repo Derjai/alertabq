@@ -1,7 +1,38 @@
+import 'package:alertabq/views/home_screen.dart';
+import 'package:alertabq/views/my_reports.dart';
 import 'package:flutter/material.dart';
 
-class Reports extends StatelessWidget {
+class Reports extends StatefulWidget {
   const Reports({super.key});
+  @override
+  _ReportState createState() => _ReportState();
+}
+
+class _ReportState extends State<Reports> {
+  int _selectedIndex = 2;
+
+  void _onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyReports()),
+        );
+        break;
+      case 2:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,9 +40,6 @@ class Reports extends StatelessWidget {
     Color textColor =
         isDarkMode ? const Color(0xFFF8F9FA) : const Color(0xFF2D3748);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mis reportes'),
-      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -95,13 +123,20 @@ class Reports extends StatelessWidget {
                   ],
                 ),
               ),
-              NavigationBar(destinations: const [
-                NavigationDestination(icon: Icon(Icons.home), label: 'Inicio'),
-                NavigationDestination(
-                    icon: Icon(Icons.history), label: 'Mis reportes'),
-                NavigationDestination(
-                    icon: Icon(Icons.verified), label: 'Verificar reportes'),
-              ])
+              NavigationBar(
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: _onDestinationSelected,
+                  destinations: const [
+                    NavigationDestination(
+                      icon: Icon(Icons.home),
+                      label: 'Inicio',
+                    ),
+                    NavigationDestination(
+                        icon: Icon(Icons.history), label: 'Mis reportes'),
+                    NavigationDestination(
+                        icon: Icon(Icons.verified),
+                        label: 'Verificar reportes'),
+                  ])
             ],
           ),
           Positioned(

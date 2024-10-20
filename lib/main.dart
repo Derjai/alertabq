@@ -1,4 +1,12 @@
 import 'package:alertabq/app_theme.dart/app_theme.dart';
+import 'package:alertabq/auth/landing_page.dart';
+import 'package:alertabq/auth/login.dart';
+import 'package:alertabq/auth/register.dart';
+import 'package:alertabq/views/home_screen.dart';
+import 'package:alertabq/views/my_reports.dart';
+import 'package:alertabq/views/profile_screen.dart';
+import 'package:alertabq/views/reports.dart';
+import 'package:alertabq/views/submit_report.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,13 +18,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: AppTheme.lightTheme(),
-      darkTheme: AppTheme.darkTheme(),
-      themeMode: ThemeMode.system,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: AppTheme.lightTheme(),
+        darkTheme: AppTheme.darkTheme(),
+        themeMode: ThemeMode.system,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const LandingPage(),
+          '/Login': (context) => const Login(),
+          '/Register': (context) => const Register(),
+          '/Home': (context) => const HomeScreen(),
+          '/History': (context) => const MyReports(),
+          '/Profile': (context) => const ProfileScreen(),
+          '/Reports': (context) => const Reports(),
+          '/Submit': (context) => const SubmitReport()
+        });
   }
 }
 

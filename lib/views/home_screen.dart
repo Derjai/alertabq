@@ -1,9 +1,42 @@
+import 'package:alertabq/views/my_reports.dart';
+import 'package:alertabq/views/reports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  void _onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        // Ya estamos en la vista de Inicio
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyReports()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Reports()),
+        );
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +78,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Configurar cuenta'),
               selected: false,
               onTap: () {
-                Navigator.pop(context);
+                Navigator.popAndPushNamed(context, '/Profile');
               },
             ),
             ListTile(
@@ -53,7 +86,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Cerrar sesión'),
               selected: false,
               onTap: () {
-                Navigator.pop(context);
+                Navigator.popAndPushNamed(context, '/');
               },
             ),
           ],
@@ -97,7 +130,9 @@ class HomeScreen extends StatelessWidget {
                   bottom: 10,
                   right: 10,
                   child: FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/Submit');
+                    },
                     tooltip: 'Reportar incidente',
                     child: const Icon(Icons.assignment_add),
                   ),
@@ -105,13 +140,19 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          NavigationBar(destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Inicio'),
-            NavigationDestination(
-                icon: Icon(Icons.history), label: 'Mis reportes'),
-            NavigationDestination(
-                icon: Icon(Icons.verified), label: 'Verificar reportes'),
-          ])
+          NavigationBar(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: _onDestinationSelected,
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.home),
+                  label: 'Inicio',
+                ),
+                NavigationDestination(
+                    icon: Icon(Icons.history), label: 'Mis reportes'),
+                NavigationDestination(
+                    icon: Icon(Icons.verified), label: 'Verificar reportes'),
+              ])
         ],
       ),
     );
