@@ -1,3 +1,4 @@
+import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,26 @@ class MyReports extends StatefulWidget {
 
 class _MyReportsState extends State<MyReports> {
   int _selectedIndex = 1;
+  int drawerIndex = 3;
+  void _onItemTapped(int index) {
+    setState(() {
+      drawerIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/Home');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/Profile');
+        break;
+      case 2:
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        break;
+      case 3:
+        break;
+    }
+  }
+
   void _onDestinationSelected(int index) {
     setState(() {
       _selectedIndex = index;
@@ -36,49 +57,11 @@ class _MyReportsState extends State<MyReports> {
       appBar: AppBar(
         title: const Text('Mis reportes'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('Usuario',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              accountEmail: Text('usuario@ejemplo.com',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              currentAccountPicture: const CircleAvatar(
-                child: Text(
-                  'U',
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-              decoration: const BoxDecoration(),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Inicio'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurar cuenta'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Cerrar sesión'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
+      drawer: CustomDrawer(
+        isDarkMode: isDarkMode,
+        textColor: textColor,
+        selectedIndex: drawerIndex,
+        onItemTapped: _onItemTapped,
       ),
       body: Stack(
         children: [
