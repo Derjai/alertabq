@@ -1,5 +1,3 @@
-import 'package:alertabq/views/home_screen.dart';
-import 'package:alertabq/views/my_reports.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -18,14 +16,10 @@ class _ReportsState extends State<Reports> {
     });
     switch (index) {
       case 0:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const HomeScreen();
-        }));
+        Navigator.pushReplacementNamed(context, '/Home');
         break;
       case 1:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const MyReports();
-        }));
+        Navigator.pushReplacementNamed(context, '/History');
         break;
       case 2:
         break;
