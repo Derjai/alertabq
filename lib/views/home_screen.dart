@@ -1,9 +1,38 @@
+import 'package:alertabq/views/my_reports.dart';
+import 'package:alertabq/views/reports.dart';
+import 'package:alertabq/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  void _onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        break;
+      case 1:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const MyReports();
+        }));
+        break;
+      case 2:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const Reports();
+        }));
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,13 +134,10 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          NavigationBar(destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Inicio'),
-            NavigationDestination(
-                icon: Icon(Icons.history), label: 'Mis reportes'),
-            NavigationDestination(
-                icon: Icon(Icons.verified), label: 'Verificar reportes'),
-          ])
+          CustomNavigationBar(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: _onDestinationSelected,
+          ),
         ],
       ),
     );
