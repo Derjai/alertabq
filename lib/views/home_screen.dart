@@ -1,5 +1,4 @@
-import 'package:alertabq/views/my_reports.dart';
-import 'package:alertabq/views/reports.dart';
+import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -22,14 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         break;
       case 1:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const MyReports();
-        }));
+        Navigator.pushReplacementNamed(context, '/History');
         break;
       case 2:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const Reports();
-        }));
+        Navigator.pushReplacementNamed(context, '/Reports');
         break;
     }
   }
@@ -44,50 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('AlertaBQ', style: TextStyle(fontSize: 20.0)),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('Usuario',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              accountEmail: Text('usuario@ejemplo.com',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              currentAccountPicture: const CircleAvatar(
-                child: Text(
-                  'U',
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-              decoration: const BoxDecoration(),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Inicio'),
-              selected: true,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurar cuenta'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Cerrar sesión'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: CustomDrawer(isDarkMode: isDarkMode, textColor: textColor),
       body: Column(
         children: [
           Expanded(
