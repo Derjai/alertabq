@@ -13,7 +13,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  void _onDestinationSelected(int index) {
+  int drawerIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      drawerIndex = index;
+    });
+    switch (index) {
+      case 0:
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/Profile');
+        break;
+      case 2:
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        break;
+      case 3:
+        break;
+    }
+  }
+
+  void onDestinationSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -39,7 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('AlertaBQ', style: TextStyle(fontSize: 20.0)),
       ),
-      drawer: CustomDrawer(isDarkMode: isDarkMode, textColor: textColor),
+      drawer: CustomDrawer(
+          isDarkMode: isDarkMode,
+          textColor: textColor,
+          selectedIndex: drawerIndex,
+          onItemTapped: _onItemTapped),
       body: Column(
         children: [
           Expanded(
@@ -88,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           CustomNavigationBar(
             selectedIndex: _selectedIndex,
-            onDestinationSelected: _onDestinationSelected,
+            onDestinationSelected: onDestinationSelected,
           ),
         ],
       ),
