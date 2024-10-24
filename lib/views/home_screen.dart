@@ -1,5 +1,7 @@
 import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
+import 'package:alertabq/widgets/pannic_button.dart';
+import 'package:alertabq/widgets/report_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -48,6 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _pannicButtonPressed() {}
+
+  void _reportButtonPressed() {
+    Navigator.pushNamed(context, '/SubmitReport');
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -91,20 +99,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Positioned(
                   bottom: 10,
                   left: 10,
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    tooltip: 'Botón de emergencia',
-                    child: const Icon(Icons.local_police),
-                  ),
+                  child: PannicButton(onPressed: _pannicButtonPressed),
                 ),
                 Positioned(
                   bottom: 10,
                   right: 10,
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    tooltip: 'Reportar incidente',
-                    child: const Icon(Icons.assignment_add),
-                  ),
+                  child: ReportButton(onPressed: _reportButtonPressed),
                 ),
               ],
             ),

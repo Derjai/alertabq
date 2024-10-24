@@ -9,7 +9,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int drawerIndex = 0;
+  int drawerIndex = 1;
   void _onItemTapped(int index) {
     setState(() {
       drawerIndex = index;

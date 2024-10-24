@@ -1,5 +1,7 @@
 import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
+import 'package:alertabq/widgets/pannic_button.dart';
+import 'package:alertabq/widgets/report_button.dart';
 import 'package:flutter/material.dart';
 
 class MyReports extends StatefulWidget {
@@ -46,6 +48,12 @@ class _MyReportsState extends State<MyReports> {
         Navigator.pushReplacementNamed(context, '/Reports');
         break;
     }
+  }
+
+  void _panicButtonPressed() {}
+
+  void _reportButtonPressed() {
+    Navigator.pushNamed(context, '/SubmitReport');
   }
 
   @override
@@ -109,25 +117,13 @@ class _MyReportsState extends State<MyReports> {
           ),
           Positioned(
             bottom: 100,
-            right: 5,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Lógica para el botón de emergencia
-              },
-              tooltip: 'Botón de emergencia',
-              child: const Icon(Icons.local_police),
-            ),
+            left: 5,
+            child: PannicButton(onPressed: _panicButtonPressed),
           ),
           Positioned(
             bottom: 100,
-            left: 5,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Lógica para crear un nuevo reporte
-              },
-              tooltip: 'Reportar incidente',
-              child: const Icon(Icons.assignment_add),
-            ),
+            right: 5,
+            child: ReportButton(onPressed: _reportButtonPressed),
           ),
         ],
       ),

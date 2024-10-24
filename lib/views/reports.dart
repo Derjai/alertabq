@@ -1,5 +1,7 @@
 import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
+import 'package:alertabq/widgets/pannic_button.dart';
+import 'package:alertabq/widgets/report_button.dart';
 import 'package:flutter/material.dart';
 
 class Reports extends StatefulWidget {
@@ -47,6 +49,12 @@ class _ReportsState extends State<Reports> {
     }
   }
 
+  void _pannicButtonPressed() {}
+
+  void _reportButtonPressed() {
+    Navigator.pushNamed(context, '/SubmitReport');
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -54,7 +62,7 @@ class _ReportsState extends State<Reports> {
         isDarkMode ? const Color(0xFFF8F9FA) : const Color(0xFF2D3748);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mis reportes'),
+        title: const Text('Reportes'),
       ),
       drawer: CustomDrawer(
         isDarkMode: isDarkMode,
@@ -108,25 +116,13 @@ class _ReportsState extends State<Reports> {
           ),
           Positioned(
             bottom: 100,
-            right: 5,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Lógica para el botón de emergencia
-              },
-              tooltip: 'Botón de emergencia',
-              child: const Icon(Icons.local_police),
-            ),
+            left: 5,
+            child: PannicButton(onPressed: _pannicButtonPressed),
           ),
           Positioned(
             bottom: 100,
-            left: 5,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Lógica para crear un nuevo reporte
-              },
-              tooltip: 'Reportar incidente',
-              child: const Icon(Icons.assignment_add),
-            ),
+            right: 5,
+            child: ReportButton(onPressed: _reportButtonPressed),
           ),
         ],
       ),
