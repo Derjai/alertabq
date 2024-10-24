@@ -1,9 +1,60 @@
+import 'package:alertabq/widgets/custom_drawer.dart';
+import 'package:alertabq/widgets/custom_navigation_bar.dart';
+import 'package:alertabq/widgets/pannic_button.dart';
+import 'package:alertabq/widgets/report_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  int drawerIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      drawerIndex = index;
+    });
+    switch (index) {
+      case 0:
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/Profile');
+        break;
+      case 2:
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        break;
+      case 3:
+        break;
+    }
+  }
+
+  void onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/History');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/Reports');
+        break;
+    }
+  }
+
+  void _pannicButtonPressed() {}
+
+  void _reportButtonPressed() {
+    Navigator.pushNamed(context, '/SubmitReport');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,50 +66,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('AlertaBQ', style: TextStyle(fontSize: 20.0)),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('Usuario',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              accountEmail: Text('usuario@ejemplo.com',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              currentAccountPicture: const CircleAvatar(
-                child: Text(
-                  'U',
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-              decoration: const BoxDecoration(),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Inicio'),
-              selected: true,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurar cuenta'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Cerrar sesión'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: CustomDrawer(
+          isDarkMode: isDarkMode,
+          textColor: textColor,
+          selectedIndex: drawerIndex,
+          onItemTapped: _onItemTapped),
       body: Column(
         children: [
           Expanded(
@@ -87,31 +99,20 @@ class HomeScreen extends StatelessWidget {
                 Positioned(
                   bottom: 10,
                   left: 10,
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    tooltip: 'Botón de emergencia',
-                    child: const Icon(Icons.local_police),
-                  ),
+                  child: PannicButton(onPressed: _pannicButtonPressed),
                 ),
                 Positioned(
                   bottom: 10,
                   right: 10,
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    tooltip: 'Reportar incidente',
-                    child: const Icon(Icons.assignment_add),
-                  ),
+                  child: ReportButton(onPressed: _reportButtonPressed),
                 ),
               ],
             ),
           ),
-          NavigationBar(destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Inicio'),
-            NavigationDestination(
-                icon: Icon(Icons.history), label: 'Mis reportes'),
-            NavigationDestination(
-                icon: Icon(Icons.verified), label: 'Verificar reportes'),
-          ])
+          CustomNavigationBar(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: onDestinationSelected,
+          ),
         ],
       ),
     );

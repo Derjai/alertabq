@@ -1,7 +1,33 @@
+import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  int drawerIndex = 1;
+  void _onItemTapped(int index) {
+    setState(() {
+      drawerIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/Home');
+        break;
+      case 1:
+        break;
+      case 2:
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        break;
+      case 3:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -12,50 +38,11 @@ class ProfileScreen extends StatelessWidget {
         title:
             const Text('Configurar cuenta', style: TextStyle(fontSize: 20.0)),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('Usuario',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              accountEmail: Text('usuario@ejemplo.com',
-                  style: TextStyle(fontSize: 20.0, color: textColor)),
-              currentAccountPicture: const CircleAvatar(
-                child: Text(
-                  'U',
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
-              decoration: const BoxDecoration(),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Inicio'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurar cuenta'),
-              selected: true,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Cerrar sesión'),
-              selected: false,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: CustomDrawer(
+          isDarkMode: isDarkMode,
+          textColor: textColor,
+          selectedIndex: drawerIndex,
+          onItemTapped: _onItemTapped),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
