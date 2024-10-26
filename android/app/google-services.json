@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "270966788778",
+    "project_id": "alertabq-d38a5",
+    "storage_bucket": "alertabq-d38a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270966788778:android:ef2fd776a40a56b32536d3",
+        "android_client_info": {
+          "package_name": "com.example.alerta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADUylipeQmVE78aUeqvgNZcrg4MaopNiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270966788778:android:c4dca68dc771f0e72536d3",
+        "android_client_info": {
+          "package_name": "com.example.alertabq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADUylipeQmVE78aUeqvgNZcrg4MaopNiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
