@@ -142,12 +142,31 @@ class RegisterState extends State<Register> {
   }
 
   void _registerWithEmailAndPassword() async {
-    final user = await _auth.createUserWithEmailAndPassword(
+    AuthResult result = await _auth.createUserWithEmailAndPassword(
         _emailController.text, _passwordController.text);
-    if (user != null) {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
-      }
+    if (result.success && mounted) {
+      Navigator.pop(context);
+    } else {
+      _showErrorSnackBar(result.error);
     }
+  }
+
+  void _showErrorSnackBar(String? code) {
+    String message;
+    switch (code) {
+      case 'email-already-in-use':
+        message = 'El correo ya está en uso';
+        break;
+      case 'weak-password':
+        message = 'Contraseña débil';
+        break;
+      default:
+        message = 'Error desconocido';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 }

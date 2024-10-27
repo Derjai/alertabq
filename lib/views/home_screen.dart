@@ -30,9 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
       case 2:
         await _auth.signOut();
-        if (mounted) {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
-        }
         break;
       case 3:
         break;

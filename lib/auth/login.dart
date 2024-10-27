@@ -1,7 +1,5 @@
 import 'package:alertabq/auth/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -143,12 +141,28 @@ class LoginState extends State<Login> {
   }
 
   void _signInWithEmailAndPassword() async {
-    final user = await _auth.signInWithEmailAndPassword(
+    AuthResult result = await _auth.signInWithEmailAndPassword(
         _emailController.text, _passwordController.text);
-    if (user != null) {
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
-      }
+    if (result.success && mounted) {
+      Navigator.pop(context);
+    } else {
+      _showErrorSnackBar(result.error);
     }
+  }
+
+  void _showErrorSnackBar(String? code) {
+    String message;
+    switch (code) {
+      case 'invalid-credential':
+        message = 'Credenciales inválidas';
+        break;
+      default:
+        message = 'Error desconocido';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 }
