@@ -112,7 +112,7 @@ class RegisterState extends State<Register> {
               ),
               SizedBox(height: size.height * 0.02),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _signInWithGoogle,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -144,6 +144,15 @@ class RegisterState extends State<Register> {
   void _registerWithEmailAndPassword() async {
     AuthResult result = await _auth.createUserWithEmailAndPassword(
         _emailController.text, _passwordController.text);
+    if (result.success && mounted) {
+      Navigator.pop(context);
+    } else {
+      _showErrorSnackBar(result.error);
+    }
+  }
+
+  void _signInWithGoogle() async {
+    AuthResult result = await _auth.loginWithGoogle();
     if (result.success && mounted) {
       Navigator.pop(context);
     } else {

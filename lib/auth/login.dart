@@ -111,7 +111,7 @@ class LoginState extends State<Login> {
                 ),
                 SizedBox(height: size.height * 0.02),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _signInWithGoogle,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -143,6 +143,15 @@ class LoginState extends State<Login> {
   void _signInWithEmailAndPassword() async {
     AuthResult result = await _auth.signInWithEmailAndPassword(
         _emailController.text, _passwordController.text);
+    if (result.success && mounted) {
+      Navigator.pop(context);
+    } else {
+      _showErrorSnackBar(result.error);
+    }
+  }
+
+  void _signInWithGoogle() async {
+    AuthResult result = await _auth.loginWithGoogle();
     if (result.success && mounted) {
       Navigator.pop(context);
     } else {
