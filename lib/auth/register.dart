@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:alertabq/auth/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -13,63 +12,17 @@ class Register extends StatefulWidget {
 
 class RegisterState extends State<Register> {
   bool isPasswordVisible = false;
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _auth = AuthService();
 
-  Future<void> _registerWithEmailAndPassword() async {
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
-      }
-    } on FirebaseAuthException catch (e) {
-      String message;
-      switch (e.code) {
-        case 'email-already-in-use':
-          message = 'El correo ya está en uso';
-          break;
-        case 'weak-password':
-          message = 'La contraseña es muy débil';
-          break;
-        default:
-          message = 'Error desconocido';
-      }
-      _showErrorSnackBar(message);
-    }
-  }
-
-  Future<void> _registerWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
-      }
-    } on FirebaseAuthException catch (e) {
-      e.code == 'account-exists-with-different-credential'
-          ? _showErrorSnackBar('Ya existe una cuenta con otro proveedor')
-          : _showErrorSnackBar('Error desconocido');
-    }
-  }
-
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
 
   @override
@@ -100,22 +53,26 @@ class RegisterState extends State<Register> {
                 ),
               ),
               SizedBox(height: size.height * 0.02),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
                   labelText: 'Nombre',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.account_circle),
                 ),
               ),
               SizedBox(height: size.height * 0.02),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
                     labelText: 'Correo',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email)),
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: _passwordController,
+                obscureText: !isPasswordVisible,
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
                   border: const OutlineInputBorder(),
@@ -155,7 +112,7 @@ class RegisterState extends State<Register> {
               ),
               SizedBox(height: size.height * 0.02),
               ElevatedButton(
-                  onPressed: _registerWithGoogle,
+                  onPressed: () {},
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -182,5 +139,15 @@ class RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  void _registerWithEmailAndPassword() async {
+    final user = await _auth.createUserWithEmailAndPassword(
+        _emailController.text, _passwordController.text);
+    if (user != null) {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/Home');
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:alertabq/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,109 +16,13 @@ class LoginState extends State<Login> {
   bool isPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _auth = AuthService();
 
-  Future<void> _signInWithEmailAndPassword() async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
-      }
-    } on FirebaseAuthException catch (e) {
-      String message;
-      switch (e.code) {
-        case 'user-not-found':
-          message = 'Usuario no encontrado';
-          break;
-        case 'wrong-password':
-          message = 'Contraseña incorrecta';
-          break;
-        default:
-          message = 'Error desconocido';
-      }
-      _showErrorSnackBar(message);
-    }
-  }
-
-  Future<void> _signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/Home');
-      }
-    } on FirebaseAuthException catch (e) {
-      e.code == 'account-exists-with-different-credential'
-          ? _showErrorSnackBar('Ya existe una cuenta con este correo')
-          : _showErrorSnackBar('Error desconocido');
-    }
-  }
-
-  Future<void> _resetPassword(String email) async {
-    try {
-      await _auth.sendPasswordResetEmail(email: email);
-      _showErrorSnackBar('Correo de recuperación enviado');
-    } on FirebaseAuthException catch (e) {
-      String message;
-      switch (e.code) {
-        case 'user-not-found':
-          message = 'Usuario no encontrado';
-          break;
-        default:
-          message = 'Error desconocido';
-      }
-      _showErrorSnackBar(message);
-    }
-  }
-
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-      duration: const Duration(seconds: 5),
-    ));
-  }
-
-  void _showResetPasswordDialog() {
-    final TextEditingController resetEmailController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Recuperar contraseña'),
-          content: TextField(
-            controller: resetEmailController,
-            decoration: const InputDecoration(
-              labelText: 'Ingresar correo',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () {
-                _resetPassword(resetEmailController.text);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Enviar correo'),
-            ),
-          ],
-        );
-      },
-    );
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
 
   @override
@@ -177,9 +82,7 @@ class LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {
-                      _showResetPasswordDialog();
-                    },
+                    onPressed: () {},
                     child: Text('¿Olvidaste tu contraseña?',
                         style: TextStyle(
                             fontSize: size.width * 0.035,
@@ -210,7 +113,7 @@ class LoginState extends State<Login> {
                 ),
                 SizedBox(height: size.height * 0.02),
                 ElevatedButton(
-                    onPressed: _signInWithGoogle,
+                    onPressed: () {},
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -237,5 +140,15 @@ class LoginState extends State<Login> {
             )),
       ),
     );
+  }
+
+  void _signInWithEmailAndPassword() async {
+    final user = await _auth.signInWithEmailAndPassword(
+        _emailController.text, _passwordController.text);
+    if (user != null) {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/Home');
+      }
+    }
   }
 }
