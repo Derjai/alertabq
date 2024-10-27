@@ -1,3 +1,4 @@
+import 'package:alertabq/auth/auth_service.dart';
 import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final _auth = AuthService();
   int drawerIndex = 1;
-  void _onItemTapped(int index) {
+  Future<void> _onItemTapped(int index) async {
     setState(() {
       drawerIndex = index;
     });
@@ -21,7 +23,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       case 1:
         break;
       case 2:
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        await _auth.signOut();
+        if (mounted) {
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        }
         break;
       case 3:
         break;
