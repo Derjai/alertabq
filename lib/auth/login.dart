@@ -1,5 +1,5 @@
+import 'package:alertabq/auth/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -12,16 +12,22 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login> {
   bool isPasswordVisible = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final _auth = AuthService();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(actions: <Widget>[
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-                Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios)),
-      ]),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
             padding: EdgeInsets.all(size.width * 0.04),
@@ -43,8 +49,9 @@ class LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
                     labelText: 'Ingresar correo',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
@@ -52,6 +59,7 @@ class LoginState extends State<Login> {
                 ),
                 SizedBox(height: size.height * 0.02),
                 TextField(
+                  controller: _passwordController,
                   obscureText: !isPasswordVisible,
                   decoration: InputDecoration(
                       labelText: 'Ingresar contraseña',
@@ -72,7 +80,7 @@ class LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: _showForgotPasswordDialog,
                     child: Text('¿Olvidaste tu contraseña?',
                         style: TextStyle(
                             fontSize: size.width * 0.035,
@@ -83,7 +91,7 @@ class LoginState extends State<Login> {
                 FractionallySizedBox(
                   widthFactor: 0.8,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _signInWithEmailAndPassword,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
                         vertical: size.height * 0.02,
@@ -102,31 +110,23 @@ class LoginState extends State<Login> {
                       fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: size.height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.g_mobiledata),
-                      tooltip: 'Iniciar sesión con Google',
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.apple),
-                      tooltip: 'Iniciar sesión con Apple',
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Platform.isIOS ? Icons.phone_iphone : Icons.phone,
-                      ),
-                      tooltip: 'Iniciar sesión con Teléfono',
-                    ),
-                  ],
-                ),
+                ElevatedButton(
+                    onPressed: _signInWithGoogle,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.g_mobiledata),
+                        SizedBox(width: size.width * 0.02),
+                        const Text(
+                          'Ingresar con Google',
+                        ),
+                      ],
+                    )),
                 SizedBox(height: size.height * 0.01),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/Register');
+                  },
                   child: Text(
                     '¿No tienes una cuenta? Regístrate',
                     style: TextStyle(
@@ -136,6 +136,90 @@ class LoginState extends State<Login> {
                 ),
               ],
             )),
+      ),
+    );
+  }
+
+  void _signInWithEmailAndPassword() async {
+    AuthResult result = await _auth.signInWithEmailAndPassword(
+        _emailController.text, _passwordController.text);
+    if (result.success && mounted) {
+      Navigator.pop(context);
+    } else {
+      _showErrorSnackBar(result.error);
+    }
+  }
+
+  void _signInWithGoogle() async {
+    AuthResult result = await _auth.loginWithGoogle();
+    if (result.success && mounted) {
+      Navigator.pop(context);
+    } else {
+      _showErrorSnackBar(result.error);
+    }
+  }
+
+  void _showForgotPasswordDialog() {
+    final TextEditingController emailController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Recuperar contraseña'),
+          content: TextField(
+            controller: emailController,
+            decoration: const InputDecoration(
+              labelText: 'Ingresar correo',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.email),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _handleForgotPassword(emailController.text);
+              },
+              child: const Text('Enviar correo'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleForgotPassword(String email) async {
+    String? message = await _auth.forgotPassword(email);
+    if (!mounted) return;
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message ?? 'Correo enviado',
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: message == null ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
+  void _showErrorSnackBar(String? code) {
+    String message;
+    switch (code) {
+      case 'invalid-credential':
+        message = 'Credenciales inválidas';
+        break;
+      default:
+        message = 'Error desconocido';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
       ),
     );
   }

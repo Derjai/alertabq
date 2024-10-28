@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "270966788778",
+    "project_id": "alertabq-d38a5",
+    "storage_bucket": "alertabq-d38a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270966788778:android:ef2fd776a40a56b32536d3",
+        "android_client_info": {
+          "package_name": "com.example.alerta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270966788778-58h3pomjqotkfbn99k0ehsf1o2s1rpf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alerta",
+            "certificate_hash": "9d653c567450374c606bb93425b74cba524e6eae"
+          }
+        },
+        {
+          "client_id": "270966788778-te2t2s8r2ldpu2mtm480f20d6417vkao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADUylipeQmVE78aUeqvgNZcrg4MaopNiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270966788778-te2t2s8r2ldpu2mtm480f20d6417vkao.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "270966788778-7qn4grh7bl3dqp9hkn8r092sioq9l0ci.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.alertabq"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270966788778:android:c4dca68dc771f0e72536d3",
+        "android_client_info": {
+          "package_name": "com.example.alertabq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270966788778-te2t2s8r2ldpu2mtm480f20d6417vkao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADUylipeQmVE78aUeqvgNZcrg4MaopNiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270966788778-te2t2s8r2ldpu2mtm480f20d6417vkao.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "270966788778-7qn4grh7bl3dqp9hkn8r092sioq9l0ci.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.alertabq"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

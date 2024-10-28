@@ -1,3 +1,4 @@
+import 'package:alertabq/auth/auth_service.dart';
 import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
 import 'package:alertabq/widgets/pannic_button.dart';
@@ -13,9 +14,10 @@ class Reports extends StatefulWidget {
 }
 
 class _ReportsState extends State<Reports> {
+  final _auth = AuthService();
   int _selectedIndex = 2;
   int drawerIndex = 3;
-  void _onItemTapped(int index) {
+  Future<void> _onItemTapped(int index) async {
     setState(() {
       drawerIndex = index;
     });
@@ -27,7 +29,10 @@ class _ReportsState extends State<Reports> {
         Navigator.pushReplacementNamed(context, '/Profile');
         break;
       case 2:
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        await _auth.signOut();
+        if (mounted) {
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        }
         break;
       case 3:
         break;
