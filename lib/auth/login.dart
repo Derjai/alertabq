@@ -80,7 +80,7 @@ class LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: _showForgotPasswordDialog,
                     child: Text('¿Olvidaste tu contraseña?',
                         style: TextStyle(
                             fontSize: size.width * 0.035,
@@ -157,6 +157,55 @@ class LoginState extends State<Login> {
     } else {
       _showErrorSnackBar(result.error);
     }
+  }
+
+  void _showForgotPasswordDialog() {
+    final TextEditingController emailController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Recuperar contraseña'),
+          content: TextField(
+            controller: emailController,
+            decoration: const InputDecoration(
+              labelText: 'Ingresar correo',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.email),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _handleForgotPassword(emailController.text);
+              },
+              child: const Text('Enviar correo'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleForgotPassword(String email) async {
+    String? message = await _auth.forgotPassword(email);
+    if (!mounted) return;
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message ?? 'Correo enviado',
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: message == null ? Colors.green : Colors.red,
+      ),
+    );
   }
 
   void _showErrorSnackBar(String? code) {

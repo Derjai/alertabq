@@ -68,6 +68,29 @@ class AuthService {
     }
   }
 
+  Future<String?> forgotPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'invalid-email':
+          message = 'El correo electrónico no es válido.';
+          break;
+        case 'user-not-found':
+          message = 'No se encontró un usuario con ese correo.';
+          break;
+        case 'too-many-requests':
+          message = 'Demasiadas solicitudes. Inténtalo más tarde.';
+          break;
+        default:
+          message = 'Error desconocido: ${e.message}';
+      }
+      return message;
+    }
+  }
+
   Future<void> signOut() async {
     await _auth.signOut();
   }
