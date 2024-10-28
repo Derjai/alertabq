@@ -2,6 +2,7 @@ import 'package:alertabq/app_theme.dart/app_theme.dart';
 import 'package:alertabq/auth/landing_page.dart';
 import 'package:alertabq/auth/login.dart';
 import 'package:alertabq/auth/register.dart';
+import 'package:alertabq/auth/verification_screen.dart';
 import 'package:alertabq/firebase_options.dart';
 import 'package:alertabq/views/home_screen.dart';
 import 'package:alertabq/views/my_reports.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/History': (context) => const MyReports(),
         '/Reports': (context) => const Reports(),
         '/SubmitReport': (context) => const SubmitReport(),
+        '/Verification': (context) => const VerificationScreen(),
       },
     );
   }

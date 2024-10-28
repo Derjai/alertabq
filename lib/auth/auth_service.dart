@@ -19,6 +19,29 @@ class AuthService {
     }
   }
 
+  Future<String?> sendEmailVerification() async {
+    try {
+      await _auth.currentUser?.sendEmailVerification();
+      return null;
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'invalid-email':
+          message = 'El correo electrónico no es válido.';
+          break;
+        case 'user-not-found':
+          message = 'No se encontró un usuario con ese correo.';
+          break;
+        case 'too-many-requests':
+          message = 'Demasiadas solicitudes. Inténtalo más tarde.';
+          break;
+        default:
+          message = 'Error desconocido: ${e.message}';
+      }
+      return message;
+    }
+  }
+
   Future<AuthResult> createUserWithEmailAndPassword(
       String email, String password) async {
     try {

@@ -1,4 +1,5 @@
 import 'package:alertabq/auth/landing_page.dart';
+import 'package:alertabq/auth/verification_screen.dart';
 import 'package:alertabq/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,10 @@ class Wrapper extends StatelessWidget {
               if (snapshot.data == null) {
                 return const LandingPage();
               } else {
-                return const HomeScreen();
+                if (snapshot.data!.emailVerified == true) {
+                  return const HomeScreen();
+                }
+                return const VerificationScreen();
               }
             }
           }),
