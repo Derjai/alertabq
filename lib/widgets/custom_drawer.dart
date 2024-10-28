@@ -1,37 +1,40 @@
+import 'package:alertabq/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
+  final String email = getEmail()!;
   final bool isDarkMode;
   final Color textColor;
   final int selectedIndex;
   final ValueChanged<int> onItemTapped;
-  const CustomDrawer(
-      {super.key,
-      required this.isDarkMode,
-      required this.textColor,
-      required this.selectedIndex,
-      required this.onItemTapped});
+  CustomDrawer({
+    super.key,
+    required this.isDarkMode,
+    required this.textColor,
+    required this.selectedIndex,
+    required this.onItemTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final String pic = email.substring(0, 1).toUpperCase();
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text('Usuario',
-                style: TextStyle(fontSize: 20.0, color: textColor)),
-            accountEmail: Text('usuario@ejemplo.com',
-                style: TextStyle(fontSize: 20.0, color: textColor)),
-            currentAccountPicture: const CircleAvatar(
+            accountEmail:
+                Text(email, style: TextStyle(fontSize: 20.0, color: textColor)),
+            currentAccountPicture: CircleAvatar(
               child: Text(
-                'U',
-                style: TextStyle(fontSize: 40.0),
+                pic,
+                style: const TextStyle(fontSize: 40.0),
               ),
             ),
             decoration: BoxDecoration(
               color: isDarkMode ? Colors.grey[850] : Colors.blue,
             ),
+            accountName: null,
           ),
           ListTile(
             leading: const Icon(Icons.home),
@@ -55,4 +58,8 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+String? getEmail() {
+  return AuthService().currentUser?.email;
 }

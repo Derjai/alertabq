@@ -35,6 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = _auth.currentUser;
+    final pic = user?.email?.substring(0, 1).toUpperCase();
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     Color textColor =
         isDarkMode ? const Color(0xFFF8F9FA) : const Color(0xFF2D3748);
@@ -52,60 +54,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Foto de perfil
             Center(
               child: Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage(
-                        'assets/images/landing.svg'), // Imagen de perfil por defecto
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: IconButton(
-                      icon: const Icon(Icons.camera_alt),
-                      onPressed: () {
-                        // Lógica para cambiar la foto de perfil
-                      },
-                    ),
+                    child: Text(pic!),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            // Campo para cambiar el nombre
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Nombre',
-                border: OutlineInputBorder(),
-              ),
+            const Text(
+              'Correo',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            // Campo para cambiar el correo
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Correo',
-                border: OutlineInputBorder(),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5),
               ),
+              child:
+                  Text(user?.email ?? '', style: const TextStyle(fontSize: 16)),
             ),
-            const SizedBox(height: 20),
-            // Campo para cambiar la contraseña
-            const TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Botón para guardar los cambios
-            ElevatedButton(
-              onPressed: () {
-                // Lógica para guardar los cambios
+            TextButton(
+              onPressed: () async {
+                await _auth.forgotPassword(user?.email ?? '');
               },
-              child: const Text('Guardar cambios'),
+              child: const Text('Cambiar contraseña'),
             ),
           ],
         ),
