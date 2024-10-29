@@ -1,4 +1,5 @@
 import 'package:alertabq/auth/auth_service.dart';
+import 'package:alertabq/data/database_service.dart';
 import 'package:alertabq/widgets/custom_drawer.dart';
 import 'package:alertabq/widgets/custom_navigation_bar.dart';
 import 'package:alertabq/widgets/pannic_button.dart';
@@ -56,6 +57,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _reportButtonPressed() {
     Navigator.pushNamed(context, '/SubmitReport');
+  }
+
+  Future<void> _initializeDatabase() async {
+    await DataBaseService.connect();
+    await DataBaseService.insertReport({
+      'title': 'Reporte de prueba',
+      'description': 'Este es un reporte de prueba',
+      'timestamp': DateTime.now().toString(),
+    });
+
+    final reports = await DataBaseService.getAllReports();
+    print('Reportes obtenidos: $reports');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeDatabase();
   }
 
   @override
