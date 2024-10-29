@@ -61,14 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _initializeDatabase() async {
     await DataBaseService.connect();
-    await DataBaseService.insertReport({
-      'title': 'Reporte de prueba',
-      'description': 'Este es un reporte de prueba',
-      'timestamp': DateTime.now().toString(),
-    });
-
-    final reports = await DataBaseService.getAllReports();
-    print('Reportes obtenidos: $reports');
   }
 
   @override
