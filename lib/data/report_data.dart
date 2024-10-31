@@ -69,4 +69,13 @@ class Event {
     }
     return map;
   }
+
+  factory Event.fromMap(Map<String, dynamic> map) {
+    return Event(
+      location: map['location'],
+      dateTime: DateTime.parse(map['dateTime']),
+      description: map['description'],
+      attachment: map['attachment'],
+    );
+  }
 }

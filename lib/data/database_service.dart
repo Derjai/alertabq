@@ -30,6 +30,18 @@ class DataBaseService {
     }
   }
 
+  static Future<List<Map<String, dynamic>>> getReportsByUser(
+      String email) async {
+    final collection = _db?.collection('reports');
+    try {
+      final reports =
+          await collection?.find(where.eq('email', email)).toList() ?? [];
+      return reports;
+    } catch (e) {
+      throw Exception('Error al obtener reportes: $e');
+    }
+  }
+
   static Future<List<Map<String, dynamic>>> getAllReports() async {
     final collection = _db?.collection('reports');
     try {
@@ -37,6 +49,33 @@ class DataBaseService {
       return reports;
     } catch (e) {
       throw Exception('Error al obtener reportes: $e');
+    }
+  }
+
+  static Future<void> deleteReport(ObjectId id) async {
+    if (_db == null || !_db!.isConnected) {
+      throw Exception('La base de datos no está conectada');
+    }
+    final collection = _db?.collection('reports');
+    try {
+      await collection?.remove(where.id(id));
+    } catch (e) {
+      throw Exception('Error al borrar reporte: $e');
+    }
+  }
+
+  static Future<void> addEventToReport(ObjectId reportId, Event event) async {
+    if (_db == null || !_db!.isConnected) {
+      throw Exception('La base de datos no está conectada');
+    }
+    final collection = _db?.collection('reports');
+    try {
+      await collection?.update(
+        where.id(reportId),
+        modify.push('events', event.toMap()),
+      );
+    } catch (e) {
+      throw Exception('Error al anexar evento al reporte: $e');
     }
   }
 }
