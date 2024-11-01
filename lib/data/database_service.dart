@@ -42,6 +42,17 @@ class DataBaseService {
     }
   }
 
+  static Future<List<Map<String, dynamic>>> getReports(String email) async {
+    final collection = _db?.collection('reports');
+    try {
+      final reports =
+          await collection?.find(where.ne('email', email)).toList() ?? [];
+      return reports;
+    } catch (e) {
+      throw Exception('Error al obtener reportes: $e');
+    }
+  }
+
   static Future<List<Map<String, dynamic>>> getAllReports() async {
     final collection = _db?.collection('reports');
     try {

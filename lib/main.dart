@@ -3,6 +3,7 @@ import 'package:alertabq/auth/landing_page.dart';
 import 'package:alertabq/auth/login.dart';
 import 'package:alertabq/auth/register.dart';
 import 'package:alertabq/auth/verification_screen.dart';
+import 'package:alertabq/data/database_service.dart';
 import 'package:alertabq/firebase_options.dart';
 import 'package:alertabq/views/home_screen.dart';
 import 'package:alertabq/views/my_reports.dart';
@@ -20,6 +21,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: '.env');
+  await DataBaseService.connect();
   runApp(const MyApp());
 }
 

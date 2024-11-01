@@ -29,8 +29,8 @@ class Report {
       'description': description,
       'location': location,
       'dateTime': dateTime.toIso8601String(),
-      'confirmed': false,
-      'priority': false,
+      'confirmed': confirmed ?? false,
+      'priority': priority ?? false,
     };
     if (attachment != null || attachment!.isNotEmpty) {
       map['attachment'] = attachment!;
