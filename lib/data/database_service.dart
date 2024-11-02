@@ -63,6 +63,21 @@ class DataBaseService {
     }
   }
 
+  static Future<void> confirmReport(ObjectId id, bool confirmed) async {
+    if (_db == null || !_db!.isConnected) {
+      throw Exception('La base de datos no está conectada');
+    }
+    final collection = _db?.collection('reports');
+    try {
+      await collection?.update(
+        where.id(id),
+        modify.set('confirmed', confirmed),
+      );
+    } catch (e) {
+      throw Exception('Error al confirmar reporte: $e');
+    }
+  }
+
   static Future<void> deleteReport(ObjectId id) async {
     if (_db == null || !_db!.isConnected) {
       throw Exception('La base de datos no está conectada');
