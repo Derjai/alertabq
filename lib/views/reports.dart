@@ -21,8 +21,8 @@ class _ReportsState extends State<Reports> {
   final _auth = AuthService();
   int _selectedIndex = 2;
   int drawerIndex = 3;
-  String? _location;
-  String? _dateTime;
+  String _location = '';
+  String _dateTime = '';
   late Future<List<Map<String, dynamic>>> _reports;
 
   Future<void> _onItemTapped(int index) async {
@@ -83,7 +83,7 @@ class _ReportsState extends State<Reports> {
 
     await _initializeLocation();
     _initializeDate();
-    if (_location == null) {
+    if (_location == '') {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -110,8 +110,8 @@ class _ReportsState extends State<Reports> {
     final report = Report(
       email: user!.email!,
       description: 'Emergencia',
-      location: _location!,
-      dateTime: DateTime.parse(_dateTime ?? DateTime.now().toIso8601String()),
+      location: _location,
+      dateTime: _dateTime != '' ? DateTime.parse(_dateTime) : DateTime.now(),
       priority: true,
       id: mongo.ObjectId(),
     );

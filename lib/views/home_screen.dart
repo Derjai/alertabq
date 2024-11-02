@@ -22,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final _auth = AuthService();
   int _selectedIndex = 0;
   int drawerIndex = 0;
-  String? _location;
-  String? _dateTime;
+  String _location = '';
+  String _dateTime = '';
   LatLng? _currentLatLng;
   List<LatLng> _reportMarkers = [];
   final MapController _mapController = MapController();
@@ -136,8 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final report = Report(
       email: user.email!,
       description: 'Emergencia',
-      location: _location ?? 'Desconocida',
-      dateTime: DateTime.parse(_dateTime ?? DateTime.now().toIso8601String()),
+      location: _location,
+      dateTime: _dateTime != '' ? DateTime.parse(_dateTime) : DateTime.now(),
       priority: true,
       id: mongo.ObjectId(),
     );

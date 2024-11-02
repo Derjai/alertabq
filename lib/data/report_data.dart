@@ -32,7 +32,7 @@ class Report {
       'confirmed': confirmed ?? false,
       'priority': priority ?? false,
     };
-    if (attachment != null || attachment!.isNotEmpty) {
+    if (attachment != null && attachment!.isNotEmpty) {
       map['attachment'] = attachment!;
     }
     if (events != null) {

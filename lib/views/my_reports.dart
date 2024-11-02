@@ -87,7 +87,61 @@ class _MyReportsState extends State<MyReports> {
     }
   }
 
-  void _panicButtonPressed() {}
+  void _panicButtonPressed() async {
+    await _createPanicReport();
+  }
+
+  Future<void> _createPanicReport() async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Usuario no autenticado'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    final locationController = TextEditingController();
+    final dateTimeController = TextEditingController();
+    await _initializeLocation(locationController);
+    _initializeDate(dateTimeController);
+    final report = Report(
+      email: user.email!,
+      description: 'Emergencia',
+      location: locationController.text,
+      dateTime: DateTime.parse(dateTimeController.text),
+      priority: true,
+      id: mongo.ObjectId(),
+    );
+
+    try {
+      await DataBaseService.insertReport(report);
+      setState(() {
+        _reports = _fetchReports();
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Reporte de pánico enviado'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al enviar reporte de pánico: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   void _reportButtonPressed() {
     Navigator.pushNamed(context, '/SubmitReport');
@@ -363,12 +417,12 @@ class _MyReportsState extends State<MyReports> {
           },
         ),
         Positioned(
-          bottom: 100,
+          bottom: 10,
           left: 5,
           child: PannicButton(onPressed: _panicButtonPressed),
         ),
         Positioned(
-          bottom: 100,
+          bottom: 10,
           right: 5,
           child: ReportButton(onPressed: _reportButtonPressed),
         ),
