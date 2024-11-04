@@ -1,3 +1,4 @@
+import 'package:alertabq/data/report_data.dart';
 import 'package:flutter/material.dart';
 
 class ReportCard extends StatefulWidget {
@@ -38,7 +39,7 @@ class _ReportCardState extends State<ReportCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.attachment != null)
-            Image.asset(
+            Image.network(
               widget.attachment!,
               height: 200,
               width: double.infinity,
@@ -100,7 +101,7 @@ class _ReportCardState extends State<ReportCard> {
 class EventCard extends StatelessWidget {
   final Event event;
 
-  const EventCard({required this.event, super.key});
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,7 @@ class EventCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (event.attachment != null)
-              Image.asset(
+              Image.network(
                 event.attachment!,
                 width: 50,
                 height: 50,
@@ -127,18 +128,4 @@ class EventCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class Event {
-  final String location;
-  final String dateTime;
-  final String description;
-  final String? attachment;
-
-  Event({
-    required this.location,
-    required this.dateTime,
-    required this.description,
-    this.attachment,
-  });
 }

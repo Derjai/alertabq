@@ -3,6 +3,7 @@ import 'package:alertabq/auth/landing_page.dart';
 import 'package:alertabq/auth/login.dart';
 import 'package:alertabq/auth/register.dart';
 import 'package:alertabq/auth/verification_screen.dart';
+import 'package:alertabq/data/database_service.dart';
 import 'package:alertabq/firebase_options.dart';
 import 'package:alertabq/views/home_screen.dart';
 import 'package:alertabq/views/my_reports.dart';
@@ -12,12 +13,15 @@ import 'package:alertabq/views/submit_report.dart';
 import 'package:alertabq/widgets/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: '.env');
+  await DataBaseService.connect();
   runApp(const MyApp());
 }
 
