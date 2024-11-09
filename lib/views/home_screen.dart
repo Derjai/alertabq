@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:alertabq/auth/auth_service.dart';
 import 'package:alertabq/data/database_service.dart';
 import 'package:alertabq/data/report_data.dart';
@@ -26,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _dateTime = '';
   LatLng? _currentLatLng;
   List<LatLng> _reportMarkers = [];
+  List<Marker> _markers = [];
   final MapController _mapController = MapController();
 
   Future<void> _onItemTapped(int index) async {
@@ -56,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _currentLatLng =
             LatLng(currentLocation.latitude!, currentLocation.longitude!);
         _reportMarkers.insert(0, _currentLatLng!);
+        _markers = convertToMarkers();
       });
     } else {
       final permission = await location.requestPermission();
@@ -66,6 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
               '${currentLocation.latitude}, ${currentLocation.longitude}';
           _currentLatLng =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          _reportMarkers.insert(0, _currentLatLng!);
+          _markers = convertToMarkers();
         });
       } else {
         if (mounted) {
@@ -81,18 +87,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Marker> convertToMarkers() {
+    const double offset = 0.0004;
+    const double angleIncrement = 2 * pi / 10;
     return _reportMarkers.asMap().entries.map((entry) {
       final index = entry.key;
       final latLng = entry.value;
+      final angle = angleIncrement * index;
+      final offsetLat = offset * cos(angle);
+      final offsetLng = offset * sin(angle);
+      final adjustedLatLng =
+          LatLng(latLng.latitude + offsetLat, latLng.longitude + offsetLng);
       return Marker(
-          width: 80.0,
-          height: 80.0,
-          point: latLng,
+          width: index == 0 ? 80.0 : 40.0,
+          height: index == 0 ? 80.0 : 40.0,
+          point: index == 0 ? latLng : adjustedLatLng,
           child: Builder(
             builder: (ctx) => Icon(
-                index == 0 ? Icons.person_pin_circle : Icons.warning,
+                index == 0
+                    ? Icons.person_pin_circle
+                    : Icons.warning_amber_rounded,
                 color: index == 0 ? Colors.blue : Colors.red,
-                size: 40.0,
+                size: index == 0 ? 40.0 : 20.0,
                 key: ValueKey(
                     index == 0 ? 'current_location' : 'report_$index')),
           ));
@@ -194,6 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
             })
             .whereType<LatLng>()
             .toList();
+        _markers = convertToMarkers();
       });
     } catch (e) {
       if (mounted) {
@@ -258,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                                 userAgentPackageName: 'com.example.alertabq',
                               ),
-                              MarkerLayer(markers: convertToMarkers()),
+                              MarkerLayer(markers: _markers),
                             ],
                           ),
                   ),
