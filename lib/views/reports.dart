@@ -292,7 +292,7 @@ class _ReportsState extends State<Reports> {
                       dateTime: report['dateTime'],
                       description: report['description'],
                       attachment: report['attachment'],
-                      events: (report['events'] as List<dynamic>)
+                      events: (report['events'] as List<dynamic>? ?? [])
                           .map((e) => Event.fromMap(e))
                           .toList(),
                       onConfirm: () =>
