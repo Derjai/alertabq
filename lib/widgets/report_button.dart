@@ -8,6 +8,8 @@ class ReportButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: 'report_button',
+      key: const Key('report_button'),
       onPressed: onPressed,
       tooltip: text,
       child: const Icon(Icons.assignment_add),

@@ -9,6 +9,8 @@ class PannicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: 'pannic_button',
+      key: const Key('pannic_button'),
       onPressed: onPressed,
       tooltip: text,
       child: const Icon(Icons.local_police),
