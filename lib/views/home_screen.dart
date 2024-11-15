@@ -271,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               TileLayer(
                                 urlTemplate:
-                                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                                 userAgentPackageName: 'com.example.alertabq',
                               ),
                               MarkerLayer(markers: _markers),
